@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delegate Registration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+ 
+</head>
+
+<body class="bg-gray-50">
+  {% if messages %}
+<div class="mb-4">
+    {% for message in messages %}
+        <div 
+            class="p-3 rounded mb-2 
+            {% if message.tags == 'success' %}
+                bg-green-100 text-green-700
+            {% elif message.tags == 'error' %}
+                bg-red-100 text-red-700
+            {% else %}
+                bg-blue-100 text-blue-700
+            {% endif %}
+        ">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+  <div class="max-w-4xl mx-auto mt-10 bg-white shadow-lg rounded-xl p-8">
+
+    <div class="flex justify-between items-center">
+      <h2 class="text-2xl font-bold text-gray-900">Delegate Registration</h2>
+
+      {% if user %}
+      <div class="text-right">
+        <p class="text-sm font-semibold text-gray-700">Welcome: {{ user.username }}</p>
+        <a href="{% url 'logout' %}" class="text-red-600 text-xs underline">Logout</a>
+      </div>
+      {% endif %}
+    </div>
+
+    <form method="POST" class="space-y-4">
+      {% csrf_token %}
+
+      <div class="grid grid-cols-2 gap-4">
+        <input type="text" name="username" value="{{ user.username }}" placeholder="Username" required
+          class="px-4 py-2 rounded-lg border border-gray-300 w-full">
+
+        <input type="text" name="designation" value="{{ user.designation }}" placeholder="Designation"
+          class="px-4 py-2 rounded-lg border border-gray-300 w-full">
+
+        <input type="text" name="name_of_institution" value="{{ user.name_of_institution }}"
+          placeholder="Institution Name" class="col-span-2 px-4 py-2 rounded-lg border w-full">
+
+        <textarea name="address" placeholder="Address" class="col-span-2 px-4 py-2 rounded-lg border w-full">{{ user.address }}</textarea>
+
+        <input type="text" name="city" value="{{ user.city }}" placeholder="City"
+          class="px-4 py-2 rounded-lg border w-full">
+
+        <input type="text" name="state" value="{{ user.state }}" placeholder="State"
+          class="px-4 py-2 rounded-lg border w-full">
+
+        <input type="text" name="country" value="{{ user.country }}" placeholder="Country"
+          class="px-4 py-2 rounded-lg border w-full">
+
+        <input type="text" name="pincode" value="{{ user.pincode }}" placeholder="Pincode"
+          class="px-4 py-2 rounded-lg border w-full">
+
+        <input type="text" name="phone_number" value="{{ user.phone_number }}" placeholder="Phone Number"
+          class="px-4 py-2 rounded-lg border w-full">
+
+        {% if user %}
+<input type="hidden" name="email" value="{{ user.email }}">
+{% else %}
+<input type="email" name="email" placeholder="Email" required
+  class="px-4 py-2 rounded-lg border w-full">
+{% endif %}
+
+
+        {% if user %}
+          <input type="text" name="IADVL_membership_number" value="{{ user.IADVL_membership_number }}"
+          placeholder="Membership No." class="px-4 py-2 rounded-lg border w-full">
+        
+        {% else %}
+
+          <input type="text" name="IADVL_membership_number" placeholder="Membership No."
+          class="px-4 py-2 rounded-lg border w-full">
+        {% endif %}
+        
+
+        <select name="meal_preference" class="px-4 py-2 rounded-lg border w-full">
+            <option value="Veg" {% if user.meal_preference == "Veg" %}selected{% endif %}>Veg</option>
+            <option value="Non-Veg" {% if user.meal_preference == "Non-Veg" %}selected{% endif %}>Non-Veg</option>
+        </select>
+      </div>
+
+      <hr class="my-6">
+
+      <h3 class="text-lg font-semibold mb-2">Accompanying Persons</h3>
+
+<div id="accompanying-container"></div>
+
+<button type="button" onclick="addPerson()" class="bg-blue-600 text-white px-4 py-2 rounded mt-3">
+    Add Accompanying Person
+</button>
+
+<script>
+    function addPerson(name = "", gender = "", age = "", relation = "", meal = "") {
+        let container = document.getElementById("accompanying-container");
+        let wrapper = document.createElement("div");
+        wrapper.classList = "grid grid-cols-5 gap-2 border p-3 rounded-md mt-3";
+
+        wrapper.innerHTML = `
+            <input type="text" name="ac_name[]" value="${name}" placeholder="Name" class="border px-2 py-1 rounded">
+            
+            <select name="ac_gender[]" class="border px-2 py-1 rounded">
+                <option value="Male" ${gender == "Male" ? "selected":""}>Male</option>
+                <option value="Female" ${gender == "Female" ? "selected":""}>Female</option>
+            </select>
+
+            <input type="number" name="ac_age[]" value="${age}" placeholder="Age" class="border px-2 py-1 rounded">
+            
+            <input type="text" name="ac_relation[]" value="${relation}" placeholder="Relation" class="border px-2 py-1 rounded">
+            
+            <select name="ac_meal[]" class="border px-2 py-1 rounded">
+                <option value="Veg" ${meal == "Veg" ? "selected":""}>Veg</option>
+                <option value="Non-Veg" ${meal == "Non-Veg" ? "selected":""}>Non-Veg</option>
+            </select>
+
+            <button type="button" onclick="this.parentElement.remove()" class="text-red-600 font-semibold ml-2">
+                ✖
+            </button>
+        `;
+
+        container.appendChild(wrapper);
+    }
+
+    // Load existing persons if updating
+    document.addEventListener("DOMContentLoaded", () => {
+        {% if accompanying %}
+            {% for person in accompanying %}
+                addPerson(
+                    "{{ person.name }}",
+                    "{{ person.gender }}",
+                    "{{ person.age }}",
+                    "{{ person.relation_to_delegate }}",
+                    "{{ person.meal_preference }}"
+                );
+            {% endfor %}
+        {% endif %}
+    });
+</script>
+
+
+      <div class="text-center pt-6">
+        <button type="submit"
+          class="bg-green-600 text-white px-8 py-3 rounded-lg shadow-md hover:bg-green-700 text-lg">
+          {% if user %} Update Information {% else %} Submit Registration {% endif %}
+        </button>
+      </div>
+    </form>
+
+    {% if user %}
+    <div class="text-center mt-6">
+      <a href="{% url 'payment_page' %}"
+         class="bg-blue-600 text-white px-8 py-3 rounded-lg shadow-md hover:bg-blue-700 text-lg">
+        Proceed to Payment
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+
+</body>
+</html>
