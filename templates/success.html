@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Success</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #fff;
+            padding: 40px;
+            width: 380px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 70px;
+            color: #28a745;
+        }
+
+        h2 {
+            margin-top: 10px;
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .details {
+            margin-top: 20px;
+            text-align: left;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .details p {
+            margin: 6px 0;
+            font-size: 15px;
+            color: #444;
+        }
+
+        .btn {
+            margin-top: 25px;
+            display: inline-block;
+            padding: 12px 25px;
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="success-icon">✔</div>
+        <h2>Payment Successful</h2>
+
+        <div class="details">
+            <p><strong>Transaction ID:</strong> {{ transaction.txnid }}</p>
+            <p><strong>Status:</strong> {{ transaction.status }}</p>
+        </div>
+
+        <a href="/" class="btn">Go to Home</a>
+    </div>
+
+</body>
+</html>

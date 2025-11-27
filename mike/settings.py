@@ -119,7 +119,34 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
+# Folder(s) where Django will search for static files (during development)
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # or os.path.join(BASE_DIR, "static") if not using Pathlib
+]
+
+# Folder where static files will be collected (for production)
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+PAYU_MERCHANT_KEY = "78SZvSP4"
+PAYU_MERCHANT_SALT = "AffzVsWFRE"
+PAYU_BASE_URL = "https://secure.payu.in/_payment"
+
+PAYU_SUCCESS_URL = "/payment/success/"
+PAYU_FAILURE_URL = "/payment/failure/"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "naveenchauhan380@gmail.com"
+EMAIL_HOST_PASSWORD = "qems sdas ljbk pjsr"
+
+AUTH_USER_MODEL = "registration.registeredUser"
+

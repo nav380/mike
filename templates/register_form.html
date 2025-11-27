@@ -1,179 +1,666 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delegate Registration</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delegate Registration</title>
+<style>
+/* BODY */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa; /* light neutral background */
+    margin: 0;
+    padding: 0;
+    color: #212529; /* professional dark gray */
+    line-height: 1.6;
+}
 
- 
-</head>
+/* BANNER */
+.bannerhead {
+    width: 100%;
+    overflow: hidden;
+}
+.bannerhead .banner {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
 
-<body class="bg-gray-50">
-  {% if messages %}
-<div class="mb-4">
-    {% for message in messages %}
-        <div 
-            class="p-3 rounded mb-2 
-            {% if message.tags == 'success' %}
-                bg-green-100 text-green-700
-            {% elif message.tags == 'error' %}
-                bg-red-100 text-red-700
-            {% else %}
-                bg-blue-100 text-blue-700
-            {% endif %}
-        ">
-            {{ message }}
-        </div>
-    {% endfor %}
-</div>
-{% endif %}
+/* NAVBAR */
+.navbar {
+    background-color: #343a40; /* professional dark navbar */
+    color: #ffffff;
+    padding: 12px 20px;
+    text-align: right;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.navbaranchor {
+    color: #f8f9fa; /* light neutral link */
+    text-decoration: none;
+    margin-left: 15px;
+    font-weight: 500;
+}
+.navbaranchor:hover {
+    color: #adb5bd; /* subtle hover color */
+}
 
+/* CONTAINER */
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
 
-  <div class="max-w-4xl mx-auto mt-10 bg-white shadow-lg rounded-xl p-8">
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+.header h1 {
+    font-size: 2.2rem;
+    color: #212529;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+.header p {
+    font-size: 1rem;
+    color: #495057;
+}
 
-    <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold text-gray-900">Delegate Registration</h2>
+/* ALERT */
+.masterclass-alert {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 500;
+}
+.masterclass-alert a {
+    color: #856404;
+    font-weight: bold;
+    text-decoration: none;
+}
+.masterclass-alert a:hover {
+    text-decoration: underline;
+}
 
-      {% if user %}
-      <div class="text-right">
-        <p class="text-sm font-semibold text-gray-700">Welcome: {{ user.username }}</p>
-        <a href="{% url 'logout' %}" class="text-red-600 text-xs underline">Logout</a>
-      </div>
-      {% endif %}
-    </div>
+/* FORM CONTENT */
+.form-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+.form-content:hover {
+    transform: translateY(-1px);
+}
 
-    <form method="POST" class="space-y-4">
-      {% csrf_token %}
+/* SECTIONS */
+.section {
+    margin-bottom: 25px;
+}
+.section-title {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+    color: #212529;
+    border-bottom: 2px solid #dee2e6;
+    display: inline-block;
+    padding-bottom: 5px;
+}
 
-      <div class="grid grid-cols-2 gap-4">
-        <input type="text" name="username" value="{{ user.username }}" placeholder="Username" required
-          class="px-4 py-2 rounded-lg border border-gray-300 w-full">
+/* FORM GRID */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
 
-        <input type="text" name="designation" value="{{ user.designation }}" placeholder="Designation"
-          class="px-4 py-2 rounded-lg border border-gray-300 w-full">
+/* FORM GROUP */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #495057;
+}
+.input {
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+.input:focus {
+    outline: none;
+    border-color: #495057;
+    box-shadow: 0 0 4px rgba(73,80,87,0.2);
+}
 
-        <input type="text" name="name_of_institution" value="{{ user.name_of_institution }}"
-          placeholder="Institution Name" class="col-span-2 px-4 py-2 rounded-lg border w-full">
+/* FULL WIDTH */
+.full-width {
+    grid-column: 1 / -1;
+}
 
-        <textarea name="address" placeholder="Address" class="col-span-2 px-4 py-2 rounded-lg border w-full">{{ user.address }}</textarea>
+/* CHECKBOX GROUP */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.checkbox-group input[type="checkbox"] {
+    accent-color: #495057;
+}
 
-        <input type="text" name="city" value="{{ user.city }}" placeholder="City"
-          class="px-4 py-2 rounded-lg border w-full">
+/* BUTTONS */
+.add-btn, .submit-btn, .remove-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.add-btn {
+    background-color: #198754; /* subtle green */
+    color: #fff;
+}
+.add-btn:hover {
+    background-color: #157347;
+}
+.remove-btn {
+    background-color: #dc3545; /* subtle red */
+    color: #fff;
+}
+.remove-btn:hover {
+    background-color: #b02a37;
+}
+.submit-btn {
+    background-color: #0d6efd; /* corporate blue */
+    color: #fff;
+    width: 100%;
+    font-size: 1rem;
+}
+.submit-btn:hover {
+    background-color: #0b5ed7;
+}
 
-        <input type="text" name="state" value="{{ user.state }}" placeholder="State"
-          class="px-4 py-2 rounded-lg border w-full">
+/* PRICE SUMMARY */
+.price-summary {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 25px;
+}
+.price-summary h3 {
+    margin-bottom: 10px;
+    color: #212529;
+}
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.price-row.total {
+    font-weight: bold;
+    font-size: 1.05rem;
+    border-top: 1px dashed #ced4da;
+    padding-top: 8px;
+}
 
-        <input type="text" name="country" value="{{ user.country }}" placeholder="Country"
-          class="px-4 py-2 rounded-lg border w-full">
+/* ACCOMPANYING PERSON */
+.accompanying-person {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
 
-        <input type="text" name="pincode" value="{{ user.pincode }}" placeholder="Pincode"
-          class="px-4 py-2 rounded-lg border w-full">
-
-        <input type="text" name="phone_number" value="{{ user.phone_number }}" placeholder="Phone Number"
-          class="px-4 py-2 rounded-lg border w-full">
-
-        {% if user %}
-<input type="hidden" name="email" value="{{ user.email }}">
-{% else %}
-<input type="email" name="email" placeholder="Email" required
-  class="px-4 py-2 rounded-lg border w-full">
-{% endif %}
-
-
-        {% if user %}
-          <input type="text" name="IADVL_membership_number" value="{{ user.IADVL_membership_number }}"
-          placeholder="Membership No." class="px-4 py-2 rounded-lg border w-full">
-        
-        {% else %}
-
-          <input type="text" name="IADVL_membership_number" placeholder="Membership No."
-          class="px-4 py-2 rounded-lg border w-full">
-        {% endif %}
-        
-
-        <select name="meal_preference" class="px-4 py-2 rounded-lg border w-full">
-            <option value="Veg" {% if user.meal_preference == "Veg" %}selected{% endif %}>Veg</option>
-            <option value="Non-Veg" {% if user.meal_preference == "Non-Veg" %}selected{% endif %}>Non-Veg</option>
-        </select>
-      </div>
-
-      <hr class="my-6">
-
-      <h3 class="text-lg font-semibold mb-2">Accompanying Persons</h3>
-
-<div id="accompanying-container"></div>
-
-<button type="button" onclick="addPerson()" class="bg-blue-600 text-white px-4 py-2 rounded mt-3">
-    Add Accompanying Person
-</button>
-
-<script>
-    function addPerson(name = "", gender = "", age = "", relation = "", meal = "") {
-        let container = document.getElementById("accompanying-container");
-        let wrapper = document.createElement("div");
-        wrapper.classList = "grid grid-cols-5 gap-2 border p-3 rounded-md mt-3";
-
-        wrapper.innerHTML = `
-            <input type="text" name="ac_name[]" value="${name}" placeholder="Name" class="border px-2 py-1 rounded">
-            
-            <select name="ac_gender[]" class="border px-2 py-1 rounded">
-                <option value="Male" ${gender == "Male" ? "selected":""}>Male</option>
-                <option value="Female" ${gender == "Female" ? "selected":""}>Female</option>
-            </select>
-
-            <input type="number" name="ac_age[]" value="${age}" placeholder="Age" class="border px-2 py-1 rounded">
-            
-            <input type="text" name="ac_relation[]" value="${relation}" placeholder="Relation" class="border px-2 py-1 rounded">
-            
-            <select name="ac_meal[]" class="border px-2 py-1 rounded">
-                <option value="Veg" ${meal == "Veg" ? "selected":""}>Veg</option>
-                <option value="Non-Veg" ${meal == "Non-Veg" ? "selected":""}>Non-Veg</option>
-            </select>
-
-            <button type="button" onclick="this.parentElement.remove()" class="text-red-600 font-semibold ml-2">
-                ✖
-            </button>
-        `;
-
-        container.appendChild(wrapper);
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
     }
+    .navbar {
+        text-align: center;
+    }
+}
 
-    // Load existing persons if updating
-    document.addEventListener("DOMContentLoaded", () => {
-        {% if accompanying %}
-            {% for person in accompanying %}
-                addPerson(
-                    "{{ person.name }}",
-                    "{{ person.gender }}",
-                    "{{ person.age }}",
-                    "{{ person.relation_to_delegate }}",
-                    "{{ person.meal_preference }}"
-                );
-            {% endfor %}
-        {% endif %}
-    });
-</script>
+/* Collapsible Section Title */
+.section-title {
+    background: #f2f2f2;
+    padding: 14px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    transition: background 0.3s ease;
+    width:95%;
+}
+
+.section-title:hover {
+    background: #e6e6e6;
+}
+
+/* Hidden Content Wrapper */
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+}
+
+/* Active State */
+.section-title.active {
+    background: #dcdcdc;
+}
+
+</style>
 
 
-      <div class="text-center pt-6">
-        <button type="submit"
-          class="bg-green-600 text-white px-8 py-3 rounded-lg shadow-md hover:bg-green-700 text-lg">
-          {% if user %} Update Information {% else %} Submit Registration {% endif %}
-        </button>
-      </div>
-    </form>
 
-    {% if user %}
-    <div class="text-center mt-6">
-      <a href="{% url 'payment_page' %}"
-         class="bg-blue-600 text-white px-8 py-3 rounded-lg shadow-md hover:bg-blue-700 text-lg">
-        Proceed to Payment
-      </a>
+</head>
+<body>
+    <div class="bannerhead">
+    <img class="banner" src="{% static '/images/WhatsApp Image 2025-11-27 at 1.22.28 PM.jpeg' %}" alt="Banner Image">
     </div>
-    {% endif %}
+    <div class="navbar">
+        Login : <a class="navbaranchor" href="{% url 'login' %}">login</a>
+    </div>
+    <div class="container">
+        
+        <div class="header">
+            <h1>✨ Delegate Registration</h1>
+        </div>
+        
+        
+        <div class="form-content">
+            <div class="masterclass-alert">
+    <a href="{% url 'payment_masterclasss' %}">For Only Mater Class Registration --></a>
+   </div>
+            <form id="regForm" method="POST">
+                {% csrf_token %}
+                
 
-  </div>
+                <!-- PERSONAL DETAILS -->
+                <div class="section">
+                    <div class="section-title" onclick="toggleSection(this)">
+        Personal Information
+    </div>
+
+    <div class="section-content">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input class="input" name="name" value="{{ user.name }}" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Designation *</label>
+                            <input class="input" name="designation" value="{{ user.designation }}" placeholder="Your designation" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Institution Name *</label>
+                            <input class="input" name="name_of_institution" value="{{ user.name_of_institution }}" placeholder="Name of your institution" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Address *</label>
+                            <textarea class="input" name="address" placeholder="Enter your complete address" required>{{ user.address }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>City *</label>
+                            <input class="input" name="city" value="{{ user.city }}" placeholder="City" required>
+                        </div>
+                        <div class="form-group">
+                            <label>State *</label>
+                            <input class="input" name="state" value="{{ user.state }}" placeholder="State" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Country *</label>
+                            <input class="input" name="country" value="{{ user.country }}" placeholder="Country" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Pincode *</label>
+                            <input class="input" type="number" name="pincode" value="{{ user.pincode }}" placeholder="Pincode" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input class="input" type="number" name="phone_number" value="{{ user.phone_number }}" placeholder="Contact number" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input class="input" type="email" name="email" value="{{ user.email }}" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>IADVL Membership No.</label>
+                            <input class="input" name="IADVL_membership_number" value="{{ user.IADVL_membership_number }}" placeholder="Membership number">
+                        </div>
+                        <div class="form-group">
+                            <label>Meal Preference *</label>
+                            <select class="input" name="meal_preference" onchange="calculateTotal()">
+                                <option value="Veg" {% if user.meal_preference == "Veg" %}selected{% endif %}>🥗 Vegetarian</option>
+                                <option value="Non-Veg" {% if user.meal_preference == "Non-Veg" %}selected{% endif %}>🍗 Non-Vegetarian</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Food Allergies</label>
+                            <input class="input" name="food_allergies" value="{{ user.food_allergies }}" placeholder="Any food allergies?">
+                        </div>
+                        <div class="form-group">
+                            <label>GST Number</label>
+                            <input class="input" name="gst_number" value="{{ user.gst_number }}" placeholder="GST number (if applicable)">
+                        </div>
+                        <div class="form-group">
+                            <label>Registration Category *</label>
+                            <select class="input" name="category" id="mainCategory" onchange="calculateTotal()">
+                                <option value="VAI Members">VAI Members</option>
+                                <option value="Non VAI Members">Non VAI Members</option>
+                                <option value="Delegates from Egypt / Sri Lanka / Nepal / Bangladesh">International Delegates</option>
+                                <option value="Post Graduates (with letter from HOD)">Post Graduates</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <div class="checkbox-group">
+                                <input type="checkbox" name="master_class" id="masterClass" onchange="calculateTotal()">
+                                <label style="margin: 0;">🎓 Master Class Access (₹5,000)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- ACCOMPANYING PERSONS -->
+                <div class="section">
+                    <h2 class="section">Accompanying Persons</h2>
+                    
+                    <div id="accompanying-container">
+                        
+
+                        {% for ac in accomp_list %}
+    <div class="accompanying-person">
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove(); calculateTotal()">✖ Remove</button>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Name *</label>
+                <input name="ac_name[]" class="input" value="{{ ac.name }}" required>
+            </div>
+            <div class="form-group">
+                <label>Gender *</label>
+                <select name="ac_gender[]" class="input">
+                    <option value="Male" {% if ac.gender == "Male" %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if ac.gender == "Female" %}selected{% endif %}>Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Age *</label>
+                <input type="number" name="ac_age[]" class="input" value="{{ ac.age }}" required>
+            </div>
+            <div class="form-group">
+                <label>Relation *</label>
+                <input name="ac_relation[]" class="input" value="{{ ac.relation_to_delegate }}" required>
+            </div>
+            <div class="form-group full-width">
+                <label>Meal Preference *</label>
+                <select name="ac_meal[]" class="input">
+                    <option value="Veg" {% if ac.meal == "Veg" %}selected{% endif %}>Veg</option>
+                    <option value="Non-Veg" {% if ac.meal == "Non-Veg" %}selected{% endif %}>Non-Veg</option>
+                </select>
+            </div>
+            <div class="form-group full-width">
+                <div class="checkbox-group">
+                    <input type="checkbox" name="ac_join_event[]" class="joinEvent" onchange="calculateTotal()" {% if ac.join_event %}checked{% endif %}>
+                    <label style="margin: 0;">🎟️ Full Delegate Access</label>
+                </div>
+            </div>
+            <div class="form-group full-width">
+                <label>Lunch Options</label>
+                <select name="ac_lunch[]" class="lunchOption input" onchange="calculateTotal()">
+                    <option value="none" {% if ac.lunch == "none" %}selected{% endif %}>No Lunch</option>
+                    <option value="27" {% if ac.lunch == "27" %}selected{% endif %}>🍽️ 27 Dec – ₹750</option>
+                    <option value="28" {% if ac.lunch == "28" %}selected{% endif %}>🍽️ 28 Dec – ₹750</option>
+                    <option value="both" {% if ac.lunch == "both" %}selected{% endif %}>🍽️ Both Days – ₹1,500</option>
+                </select>
+            </div>
+            <div class="form-group full-width">
+                <label style="margin-bottom: 10px;">Extra Events</label>
+                <div class="extras-grid">
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="ac_extra_gala[]" class="extra" data-price="2000" onchange="calculateTotal()" {% if ac.extra_gala %}checked{% endif %}>
+                        <label style="margin: 0;">🎉 Gala Night (₹2,000)</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="ac_extra_cruise[]" class="extra" data-price="2000" onchange="calculateTotal()" {% if ac.extra_cruise %}checked{% endif %}>
+                        <label style="margin: 0;">🚢 River Cruise (₹2,000)</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="ac_extra_darshan[]" class="extra" data-price="1500" onchange="calculateTotal()" {% if ac.extra_darshan %}checked{% endif %}>
+                        <label style="margin: 0;">🏖️ Goa Darshan (₹1,500)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+                    </div>
+                    <button type="button" onclick="addPerson()" class="add-btn">+ Add Accompanying Person</button>
+                </div>
+
+                <!-- PRICE SUMMARY -->
+                <div class="price-summary">
+                    <h3>💰 Price Summary</h3>
+                    <div class="price-row">
+                        <span>Delegate Fee:</span>
+                        <span>₹<span id="delegateFee">20000</span></span>
+                    </div>
+                    <div class="price-row">
+                        <span>Accompanying Fee:</span>
+                        <span>₹<span id="acFee">0</span></span>
+                    </div>
+                    <div class="price-row">
+                        <span>Master Class:</span>
+                        <span>₹<span id="mcFee">0</span></span>
+                    </div>
+                    <div class="price-row">
+                        <span>Extras Total:</span>
+                        <span>₹<span id="extrasFee">0</span></span>
+                    </div>
+                    <div class="price-row">
+                        <span>Subtotal:</span>
+                        <span>₹<span id="subTotal">20000</span></span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Final Total (+3% Bank Charges):</span>
+                        <span>₹<span id="finalTotal">20600</span></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    {% if user %}
+                        ✓ Update Registration
+                    {% else %}
+                        ✓ Complete Registration
+                    {% endif %}
+                </button>
+                
+
+            </form>
+            {% if user %}
+            
+                    <a href="{% url 'payment_page' %}">
+                        <button class="submit-btn" style="background: linear-gradient(135deg, #007bff 0%, #6610f2 100%); margin-top: 15px;">
+                            💳 Proceed to Payment
+                        </button>
+                    </a>
+                {% endif %}
+        </div>
+    </div>
+
+    <script>
+        const delegateFees = {
+            'VAI Members': 20000,
+            'Non VAI Members': 25000,
+            'Delegates from Egypt / Sri Lanka / Nepal / Bangladesh': 15000,
+            'Post Graduates (with letter from HOD)': 15000
+        };
+
+        function addPerson() {
+            const container = document.getElementById('accompanying-container');
+            const personDiv = document.createElement('div');
+            personDiv.className = 'accompanying-person';
+            personDiv.innerHTML = `
+                <button type="button" class="remove-btn" onclick="this.parentElement.remove(); calculateTotal()">✖ Remove</button>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Name *</label>
+                        <input name="ac_name[]" class="input" placeholder="Full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender *</label>
+                        <select name="ac_gender[]" class="input">
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Age *</label>
+                        <input type="number" name="ac_age[]" class="input" placeholder="Age" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Relation *</label>
+                        <input name="ac_relation[]" class="input" placeholder="Relation" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Meal Preference *</label>
+                        <select name="ac_meal[]" class="input">
+                            <option>Veg</option>
+                            <option>Non-Veg</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="ac_join_event[]" class="joinEvent" onchange="calculateTotal()">
+                            <label style="margin: 0;">🎟️ Full Delegate Access</label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Lunch Options</label>
+                        <select name="ac_lunch[]" class="lunchOption input" onchange="calculateTotal()">
+                            <option value="none">No Lunch</option>
+                            <option value="27">🍽️ 27 Dec – ₹750</option>
+                            <option value="28">🍽️ 28 Dec – ₹750</option>
+                            <option value="both">🍽️ Both Days – ₹1,500</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label style="margin-bottom: 10px;">Extra Events</label>
+                        <div class="extras-grid">
+                            <div class="checkbox-group">
+                                <input type="checkbox" name="ac_extra_gala[]" class="extra" data-price="2000" onchange="calculateTotal()">
+                                <label style="margin: 0;">🎉 Gala Night (₹2,000)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" name="ac_extra_cruise[]" class="extra" data-price="2000" onchange="calculateTotal()">
+                                <label style="margin: 0;">🚢 River Cruise (₹2,000)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" name="ac_extra_darshan[]" class="extra" data-price="1500" onchange="calculateTotal()">
+                                <label style="margin: 0;">🏖️ Goa Darshan (₹1,500)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(personDiv);
+        }
+
+       function calculateTotal() {
+    let category = document.getElementById('mainCategory').value;
+    let dFee = delegateFees[category] || 0;
+
+    let acFee = 0, extras = 0;
+
+    document.querySelectorAll('#accompanying-container > div').forEach((row) => {
+        const fullDelegate = row.querySelector('.joinEvent');
+        const lunchWrapper = row.querySelector('.lunch-wrapper');
+        const lunchSelect = row.querySelector('.lunchOption');
+        const extrasWrapper = row.querySelector('.extras-wrapper');
+        const extraInputs = row.querySelectorAll('.extra');
+
+        if (fullDelegate && fullDelegate.checked) {
+
+            // Full access fee
+            acFee += dFee;
+
+            // Hide lunch and extras
+            if (lunchWrapper) lunchWrapper.style.display = "none";
+            if (extrasWrapper) extrasWrapper.style.display = "none";
+
+            // Reset values
+            if (lunchSelect) lunchSelect.value = "none";
+            extraInputs.forEach(ex => ex.checked = false);
+
+        } else {
+
+            // Show lunch + extras
+            if (lunchWrapper) lunchWrapper.style.display = "block";
+            if (extrasWrapper) extrasWrapper.style.display = "block";
+
+            // Normal lunch price
+            let lunch = lunchSelect?.value;
+            if (lunch === '27' || lunch === '28') extras += 750;
+            if (lunch === 'both') extras += 1500;
+
+            // Extra events
+            extraInputs.forEach((input) => {
+                if (input.checked) extras += parseInt(input.dataset.price);
+            });
+        }
+    });
+
+    let mcFee = document.getElementById('masterClass').checked ? 5000 : 0;
+
+    let subTotal = dFee + acFee + extras + mcFee;
+    let finalTotal = Math.round(subTotal * 1.03);
+
+    document.getElementById('delegateFee').textContent = dFee;
+    document.getElementById('acFee').textContent = acFee;
+    document.getElementById('extrasFee').textContent = extras;
+    document.getElementById('mcFee').textContent = mcFee;
+    document.getElementById('subTotal').textContent = subTotal;
+    document.getElementById('finalTotal').textContent = finalTotal;
+}
+
+document.addEventListener("change", calculateTotal);
+
+
+        
+    </script>
+    <script>
+function toggleSection(el) {
+    el.classList.toggle("active");
+    const content = el.nextElementSibling;
+
+    if (el.classList.contains("active")) {
+        content.style.maxHeight = content.scrollHeight + "px";
+    } else {
+        content.style.maxHeight = null;
+    }
+}
+</script>
 
 </body>
 </html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8d7da;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 380px;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .fail-icon {
+            font-size: 70px;
+            color: #dc3545;
+        }
+
+        h2 {
+            margin-top: 10px;
+            color: #dc3545;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .details {
+            margin-top: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .details p {
+            margin: 6px 0;
+            color: #444;
+        }
+
+        .retry-btn {
+            margin-top: 25px;
+            display: inline-block;
+            padding: 12px 25px;
+            background: #dc3545;
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 17px;
+            transition: 0.3s;
+        }
+
+        .retry-btn:hover {
+            background: #b02a37;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="fail-icon">✖</div>
+        <h2>Payment Failed</h2>
+
+        <div class="details">
+            <p><strong>Transaction ID:</strong> {{ transaction.txnid }}</p>
+            <p><strong>Status:</strong> {{ transaction.status }}</p>
+        </div>
+
+        <a href="/" class="retry-btn">Try Again</a>
+    </div>
+
+</body>
+</html>

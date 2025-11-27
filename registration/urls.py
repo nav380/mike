@@ -4,5 +4,8 @@ urlpatterns = [
     path('', register_user, name='register_user'),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
+    path("verify/<str:email>/", verify_otp_view, name="verify"),
+    path("new_registration",new_registration,name="newregistration")
+    
 
 ]

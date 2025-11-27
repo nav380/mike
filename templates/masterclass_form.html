@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Masterclass Registration & Payment</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Banner */
+    .bannerhead {
+    width: 100%;
+    overflow: hidden;
+}
+.bannerhead .banner {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    
+}
+
+    /* Navbar */
+    .navbar {
+        background: #2b2b2b;
+        padding: 12px 25px;
+        color: #fff;
+        font-weight: 600;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+    }
+    .navbaranchor {
+        color: #2617fcff;
+        text-decoration: none;
+        margin-left: 12px;
+        font-size: 15px;
+    }
+    .navbaranchor:hover {
+        color: #bdbdbd;
+    }
+
+    /* Container */
+    .container {
+        background: #fff;
+        max-width: 600px;
+        margin: 35px auto;
+        padding: 40px 45px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #222;
+        font-size: 26px;
+        font-weight: 700;
+    }
+
+    label {
+        margin-top: 16px;
+        display: block;
+        font-size: 15px;
+        font-weight: 600;
+        color: #444;
+    }
+    input {
+        width: 95%;
+        padding: 11px 13px;
+        margin-top: 5px;
+        border: 1px solid #d1d1d1;
+        border-radius: 6px;
+        font-size: 15px;
+    }
+    input:focus {
+        border-color: #ff5722;
+        outline: none;
+    }
+
+    /* Amount Section */
+    .amount-card {
+        border: 1px solid #ddd;
+        padding: 18px 20px;
+        border-radius: 10px;
+        background: #fafafa;
+        margin-top: 25px;
+        font-size: 15px;
+    }
+    .amount-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 7px;
+        font-weight: 600;
+    }
+    .topay {
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+        font-size: 17px;
+        font-weight: 700;
+        color: #111;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 28px;
+        background: #ff5722;
+        color: #fff;
+        border-radius: 6px;
+        border: none;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #e64a19;
+    }
+
+    @media(max-width: 600px) {
+        .container {
+            padding: 30px 18px;
+        }
+        .banner {
+            height: 190px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="bannerhead">
+    <img class="banner" src="{% static '/images/WhatsApp Image 2025-11-27 at 1.22.28 PM.jpeg' %}" alt="Banner Image">
+</div>
+
+<div class="navbar">
+    Login : <a class="navbaranchor" href="{% url 'login' %}">Login</a>
+</div>
+
+<div class="container">
+    <h2>Masterclass Registration & Payment</h2>
+
+    <form method="post" action="{{payment_masterclasss}}">
+        {% csrf_token %}
+
+        <label>Full Name</label>
+        <input type="text" name="full_name" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Phone Number</label>
+        <input type="number" name="phone_number" required>
+
+        <label>Designation</label>
+        <input type="text" name="designation">
+
+        <label>Institution Name</label>
+        <input type="text" name="institution_name">
+
+        <label>City</label>
+        <input type="text" name="city">
+
+        <label>State</label>
+        <input type="text" name="state">
+
+        <label>Country</label>
+        <input type="text" name="country">
+
+        <div class="amount-card">
+            <div class="amount-row">
+                <span>Amount</span><span>₹ 10,000</span>
+            </div>
+            <div class="amount-row">
+                <span>Bank Charges (3%)</span><span>₹ 300</span>
+            </div>
+            <div class="amount-row topay">
+                <span>Total Payable</span><span>₹ 10,300</span>
+            </div>
+        </div>
+
+        <button type="submit">Pay Now</button>
+    </form>
+</div>
+
+</body>
+</html>

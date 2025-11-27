@@ -1,0 +1,14 @@
+<form id="payuForm" action="{{ action }}" method="post">
+  {% for key, value in posted.items %}
+    <input type="hidden" name="{{ key }}" value="{{ value }}">
+  {% endfor %}
+  <noscript>
+    <button type="submit">Pay Now</button>
+  </noscript>
+</form>
+
+<script>
+document.getElementById("payuForm").submit();
+</script>
+
+
