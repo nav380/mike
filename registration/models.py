@@ -26,6 +26,7 @@ class registeredUser(AbstractBaseUser, PermissionsMixin):
     state = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     pincode = models.CharField(max_length=20, blank=True, null=True)
+    phone_code=models.CharField(max_length=10,blank=True,null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField(unique=True)
     IADVL_membership_number = models.CharField(max_length=50, blank=True, null=True)

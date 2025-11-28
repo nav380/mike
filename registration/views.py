@@ -42,7 +42,7 @@ def register_user(request):
         if not user:
             if registeredUser.objects.filter(email=email).exists():
                 messages.error(request, "Email already registered. Please login.")
-                return redirect("login")
+                return redirect("register_user")
             user = registeredUser()
         if user:
             messages.success(request, f"Registration updated! ")
@@ -61,6 +61,7 @@ def register_user(request):
         user.state = request.POST.get("state")
         user.country = request.POST.get("country")
         user.pincode = request.POST.get("pincode")
+        user.phone_code=request.POST.get("phone_code")
         user.phone_number = request.POST.get("phone_number")
         user.email = email
         user.IADVL_membership_number = request.POST.get("IADVL_membership_number")
